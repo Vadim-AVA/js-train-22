@@ -11,6 +11,15 @@ class Customer {
   /**
    * Метод відправки повідомлення клієнту по електронній пошті.Приймає message - повідомлення,та виводить в консоль ${this.email} ${message}.
    */
+
+  constructor(email) {
+    this.email = email;
+  }
+  
+  sendMessage(message) {
+    console.log(`${this.email} ${message}`);
+  }
+
 }
 
 /**
@@ -20,12 +29,18 @@ class Product {
   /**
    * Конструктор для класу Product.Приймає name - Назва продукту.
    */
+
+  constructor(name) {
+    this.name = name;
+  }
+
 }
 
 /**
  * Клас Store представляє магазин, який може мати підписників і створювати нові продукти.
  * Магазин має назву і список підписників, які отримують повідомлення про нові продукти.
  */
+
 class Store {
   /**
    * Конструктор для класу Store.Приймає name - Назва магазину, та створює пустий масив customers
@@ -48,23 +63,54 @@ class Store {
    */
   // За допомогою forEach перебираємо масив customers
   // Для кожного елементу масиву викликаємо метод sendEmail з рядком `Новий продукт "${product.name}" в магазині ${this.name}!`
+
+
+  constructor(name) {
+    this.name = name;
+    this.customers = [];
+  }
+
+  subscribe(customer) {
+    this.customers.push(customer);
+  }
+
+  unsubscribe(customer) {
+    this.customers = this.customers.filter(c => c !== customer);
+  }
+
+  createProduct(name) {
+    const product = { name: name };
+    this.sendNotify(product);
+  }
+
+  sendNotify(product) {
+    this.customers.forEach(customer => {
+      this.sendEmail(customer, `Новий продукт "${product.name}" в магазині ${this.name}!`);
+    });
+  }
+
+  sendEmail(customer, message) {
+    // Implementation for sending an email
+    console.log(`${customer.email} ${message}`);
+  }
+
 }
 
 console.log("Завдання 3 ====================================");
 // Після виконання розкоментуйте код нижче
 
-// const store = new Store("IT Supermarket");
+const store = new Store("IT Supermarket");
 
-// const customer1 = new Customer("john@example.com");
-// const customer2 = new Customer("jane@example.com");
-// const customer3 = new Customer("alice@example.com");
+const customer1 = new Customer("john@example.com");
+const customer2 = new Customer("jane@example.com");
+const customer3 = new Customer("alice@example.com");
 
-// store.subscribe(customer1);
-// store.subscribe(customer2);
-// store.subscribe(customer3);
+store.subscribe(customer1);
+store.subscribe(customer2);
+store.subscribe(customer3);
 
-// store.createProduct("Новий ноутбук");
+store.createProduct("Новий ноутбук");
 
-// store.unsubscribe(customer1);
+store.unsubscribe(customer1);
 
-// store.createProduct("Бездротові навушники");
+store.createProduct("Бездротові навушники");
